@@ -8,15 +8,20 @@
 
         plot.autoScale = function () {
             var opts = plot.getYAxes()[0].options;
+            var optsx = plot.getXAxes()[0].options;
             var data = plot.getData();
-            var max = 0;
+            var maxx = 0, maxy = 0;
 
             $.each(data, function (index, s) {
-                max = Math.max(max, autoScale(plot, s, s.data, s.datapoints));
+                var max = autoScale(plot, s, s.data, s.datapoints);
+                maxx = Math.max(maxx, max['maxx']);
+                maxy = Math.max(maxy, max['maxy']);
             });
 
+            optsx.min = 0;
+            optsx.max = maxx;
             opts.min = 0;
-            opts.max = max;
+            opts.max = maxy;
 
             plot.setupGrid();
             plot.draw();
@@ -28,24 +33,29 @@
         }
 
         function autoScale(plot, series, data, datapoints) {
-            var _max = Number.NEGATIVE_INFINITY;
             var options = plot.getOptions();
 
             // limit to visible serie
-            if (series.lines.show || series.points.show) {
-                var max = Number.NEGATIVE_INFINITY;
+            if (series.lines.show || series.points.show || series.bars.show) {
+                var maxx = Number.NEGATIVE_INFINITY;
+                var maxy = Number.NEGATIVE_INFINITY;
 
-                var xaxis = plot.getAxes().xaxis;
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i][0] >= xaxis.options.min && data[i][0] <= xaxis.options.max) {
-                        max = Math.max(max, data[i][1]);
-                    }
+                    maxx = Math.max(maxx, data[i][0]);
+                    maxy = Math.max(maxy, data[i][1]);
                 }
 
-                max += max * options.yaxis.autoscaleMargin * 10;
-                return Math.max(_max, max);
+                maxx += 2;
+                maxy += maxy * options.yaxis.autoscaleMargin * 10;
+                return {
+                  maxx: maxx,
+                  maxy: maxy
+                };
             } else {
-                return 0;
+                return {
+                  maxx: 0,
+                  maxy: 0
+                };
             }
         }
     }
