@@ -1,0 +1,23 @@
+{
+  "name": "flot-plugin-collection",
+  "version": "1.0.0",
+  "description": "Null",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wktang/flot-plugin-collection.git"
+  },
+  "keywords": [
+    "flot"
+  ],
+  "bugs": {
+    "url": "https://github.com/wktang/flot-plugin-collection/issues"
+  },
+  "homepage": "https://github.com/wktang/flot-plugin-collection#readme"
+}
