@@ -7,28 +7,28 @@
     function init(plot) {
 
         plot.autoScale = function () {
-            var opts = plot.getYAxes()[0].options;
-            var optsx = plot.getXAxes()[0].options;
+            var optsY = plot.getYAxes()[0].options;
+            var optsX = plot.getXAxes()[0].options;
             var data = plot.getData();
-            var maxx = 0, maxy = 0;
+            var maxX = 0, maxY = 0;
 
             $.each(data, function (index, s) {
                 var max = autoScale(plot, s, s.data, s.datapoints);
-                maxx = Math.max(maxx, max['maxx']);
-                maxy = Math.max(maxy, max['maxy']);
+                maxX = Math.max(maxX, max['maxX']);
+                maxY = Math.max(maxY, max['maxY']);
             });
 
-            optsx.min = 0;
-            optsx.max = maxx;
-            opts.min = 0;
-            opts.max = maxy;
+            optsX.min = 0;
+            optsX.max = maxX;
+            optsY.min = 0;
+            optsY.max = maxY;
 
             plot.setupGrid();
             plot.draw();
 
             return {
-                min: opts.min,
-                max: opts.max
+                min: optsY.min,
+                max: optsY.max
             };
         }
 
@@ -37,24 +37,24 @@
 
             // limit to visible serie
             if (series.lines.show || series.points.show || series.bars.show) {
-                var maxx = Number.NEGATIVE_INFINITY;
-                var maxy = Number.NEGATIVE_INFINITY;
+                var maxX = Number.NEGATIVE_INFINITY;
+                var maxY = Number.NEGATIVE_INFINITY;
 
                 for (var i = 0; i < data.length; i++) {
-                    maxx = Math.max(maxx, data[i][0]);
-                    maxy = Math.max(maxy, data[i][1]);
+                    maxX = Math.max(maxX, data[i][0]);
+                    maxY = Math.max(maxY, data[i][1]);
                 }
 
-                maxx += 2;
-                maxy += maxy * options.yaxis.autoscaleMargin * 10;
+                maxX += 2;
+                maxY += maxY * options.yaxis.autoscaleMargin * 10;
                 return {
-                  maxx: maxx,
-                  maxy: maxy
+                    maxX: maxX,
+                    maxY: maxY
                 };
             } else {
                 return {
-                  maxx: 0,
-                  maxy: 0
+                    maxX: 0,
+                    maxY: 0
                 };
             }
         }
