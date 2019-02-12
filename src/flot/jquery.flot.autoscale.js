@@ -13,11 +13,11 @@
             var maxX = 0, maxY = 0, minX = 0, minY = 0;
 
             $.each(data, function (index, s) {
-                var max = autoScale(plot, s, s.data, s.datapoints);
-                maxX = Math.max(maxX, max['maxX']);
-                maxY = Math.max(maxY, max['maxY']);
-                minX = Math.max(minX, min['minX']);
-                minY = Math.max(minY, min['minY']);
+                var minmax = autoScale(plot, s, s.data, s.datapoints);
+                maxX = Math.max(maxX, minmax['maxX']);
+                maxY = Math.max(maxY, minmax['maxY']);
+                minX = Math.max(minX, minmax['minX']);
+                minY = Math.max(minY, minmax['minY']);
             });
 
             optsX.min = minX;
@@ -53,10 +53,10 @@
                     minY = Math.min(minY, data[i][1]);
                 }
 
-                maxX += 2;
+                maxX += 10;
                 maxY += maxY * options.yaxis.autoscaleMargin * 10;
 
-                minY -= 2;
+                minX = Math.max(minX - 10, 0);
                 minY -= minY * options.yaxis.autoscaleMargin * 10;
                 return {
                     minX: minX,
